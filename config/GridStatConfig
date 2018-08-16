@@ -1,0 +1,127 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Grid-Stat configuration file.
+//
+// For additional information, see the MET_BASE/data/config/README file.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Output model name to be written
+//
+model = "${model}_${domain}";
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Forecast and observation fields to be verified
+//
+fcst = {
+   field = [
+      {
+        name  = "APCP_${accum}";
+        level = [ "(*,*)" ];
+      }
+   ];
+};
+obs = {
+   field = [
+      {
+        name  = "${obs_name}";
+        level = [ "${obs_level}" ];
+      }
+   ];
+};
+
+wind_thresh = [ NA ];
+cat_thresh  = [ >0.00, >=0.1, >=0.4, >=1.6, >=6.4, >=12.8, >=25.6 ];
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Verification masking regions
+//
+mask = {
+   grid = [];
+   poly = [ ${vx_mask} ];
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Confidence interval settings
+//
+ci_alpha  = [ 0.05 ];
+
+boot = {
+   interval = PCTILE;
+   rep_prop = 1.0;
+   n_rep    = 0;
+   rng      = "mt19937";
+   seed     = "";
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Interpolation methods
+//
+interp = {
+   field      = BOTH;
+   vld_thresh = 1.0;
+
+   type = [
+      {
+         method = UW_MEAN;
+         width  = 1;
+      }
+   ];
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Neighborhood methods
+//
+nbrhd = {
+   vld_thresh = 1.0;  
+   width      = [ 3, 7 ];
+   cov_thresh = [ >=0.5 ];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+//
+// Statistical output types
+//
+output_flag = {
+   fho    = NONE;
+   ctc    = STAT;
+   cts    = STAT;
+   mctc   = NONE;
+   mcts   = NONE;
+   cnt    = STAT;
+   sl1l2  = STAT;
+   vl1l2  = NONE;
+   pct    = NONE;
+   pstd   = NONE;
+   pjc    = NONE;
+   prc    = NONE;
+   nbrctc = ${nbr_flag};
+   nbrcts = ${nbr_flag};
+   nbrcnt = ${nbr_flag};
+};
+
+//
+// NetCDF matched pairs output file
+//
+nc_pairs_flag = FALSE;
+
+////////////////////////////////////////////////////////////////////////////////
+
+rank_corr_flag = FALSE;
+tmp_dir        = "/tmp";
+output_prefix  = "${model}_${domain}_${accum}h_${case}";
+version        = "V4.0";
+
+////////////////////////////////////////////////////////////////////////////////

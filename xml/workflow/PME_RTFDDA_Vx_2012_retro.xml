@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<!DOCTYPE workflow
+[
+  <!ENTITY PROJ_DIR           "/d1/pmemet">
+  <!ENTITY BIN_DIR            "&PROJ_DIR;/projects/saudi/rtf3h/pmemet/user/bin">
+  <!ENTITY DATA_DIR           "/d2/pmemet">
+
+  <!ENTITY MET_DIR            "&PROJ_DIR;/MET/MET_releases/MET_latest">
+  <!ENTITY CONFIG_DIR         "&PROJ_DIR;/projects/saudi/rtf3h/pmemet/user/config">
+
+  <!ENTITY OUT_DIR            "&DATA_DIR;/met_out">
+  <!ENTITY LOG_DIR            "&DATA_DIR;/log">
+  <!ENTITY TMP_DIR            "/tmp">
+
+  <!ENTITY PME_DA_DATA_DIR    "/d2/pmefdda/cycles/GWPME/GRM">
+  <!ENTITY PME_DA_FCST_DIR    "&PME_DA_DATA_DIR;/output/grib">
+
+  <!ENTITY PME_NODA_DATA_DIR  "&DATA_DIR;/fcst/pme_noda_native">
+  <!ENTITY PME_NODA_FCST_DIR  "&DATA_DIR;/fcst/pme_noda">
+
+  <!ENTITY PME_WRF22_DATA_DIR "&DATA_DIR;/fcst/pme_wrf22_native">
+  <!ENTITY PME_WRF22_FCST_DIR "&DATA_DIR;/fcst/pme_wrf22">
+
+  <!ENTITY GFS_DATA_DIR       "/d1/pmeop/datainput/gfs4">
+  <!ENTITY GFS_FCST_DIR       "&DATA_DIR;/fcst/gfs4">
+
+  <!ENTITY POINT_DATA_DIR     "&PME_DA_DATA_DIR;">
+  <!ENTITY POINT_OBS_DIR      "&DATA_DIR;/obs/point">
+
+  <!ENTITY RADAR_DATA_DIR     "&DATA_DIR;/obs/radar/accum_1hr/mdv">
+  <!ENTITY RADAR_OBS_DIR      "&DATA_DIR;/obs/radar/accum_1hr/grib">
+  
+  <!ENTITY VXUTIL_CONST       "&BIN_DIR;/constants.proj">
+
+  <!ENTITY PROJECT            "PMEMET">
+  <!ENTITY QUEUE              "batch">
+  <!ENTITY SCHED              "torque">
+  
+  <!-- Time offset from the cycle time to the model initialization time -->
+  <!ENTITY INIT_OFFSET       "-02:00:00">
+  
+  <!-- If this time has passed without the current cycle's forecast arriving, go ahead and verify anyway -->
+  <!ENTITY VX_DEADLINE       "04:00:00">
+
+  <!-- If this time has passed without all vx tasks completing, go ahead and load METViewer anyway. -->
+  <!-- Set very, very large for retrospective mode. -->
+  <!ENTITY METV_DEADLINE     "365:00:00:00">
+
+  <!ENTITY RFMT_WALLTIME     "10:00">
+  <!ENTITY VX_WALLTIME       "02:00:00">
+  <!ENTITY METV_WALLTIME     "02:00:00">
+]>
+
+<workflow realtime="F" scheduler="&SCHED;" cyclelifespan="3:00:00:00" cyclethrottle="12" corethrottle="10" taskthrottle="10">
+
+  <log verbosity="10"><cyclestr>&LOG_DIR;/workflow/PME_RTFDDA_Vx/workflow_@Y@m@d@H.log</cyclestr></log>
+
+  <!-- Perform verification every 6-hours and process 6 times offsets: minus 3, 4, 5, 6, 7, and 8 hours -->
+  <!-- Missing output from 2013123118 to 2014010723: so run 201401010200 to 201401080200 -->
+  <cycledef group="6hourly">201401010200 201401080800 06:00:00</cycledef>
+  <!-- <cycledef group="6hourly">0 02,08,14,20 * * 2012-2020 *</cycledef> !-->
+
+  <!-- Begin metatask for PME valid time offsets -->
+  <metatask>
+
+    <!-- Time offset from the valid time to the cycle time -->
+    <!-- Verify the PME model hourly -->
+    <var name="valid_offset">3 4 5 6 7 8</var>
+    
+    <!-- Reformat little_r point observations for this valid time -->
+    <task name="rfmt_obs_little_r_h#valid_offset#" maxtries="3" cycledefs="6hourly">
+      <command>
+        &BIN_DIR;/run_command.ksh &BIN_DIR;/rfmt_obs_little_r.pl
+        <cyclestr offset="-#valid_offset#:00:00">-out_dir &POINT_OBS_DIR;/@Y@m@d</cyclestr>
+        &POINT_DATA_DIR;/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/RAP_RTFDDA/<cyclestr offset="-#valid_offset#:00:00">qc_out_@Y-@m-@d_@H:00:00.GRM_P+FCST</cyclestr>
+      </command>
+      <account>&PROJECT;</account>
+      <queue>&QUEUE;</queue>
+      <cores>1</cores>
+      <walltime>&RFMT_WALLTIME;</walltime>
+      <join>&LOG_DIR;/rfmt_obs_little_r/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/rfmt_obs_little_r_@Y@m@d@H.log</cyclestr></join>
+      <jobname><cyclestr offset="-#valid_offset#:00:00">rfmt_obs_little_r_@Y@m@d@H</cyclestr></jobname>
+      
+      <envar>
+        <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+      </envar>
+
+      <dependency>
+        <datadep age="900">&POINT_DATA_DIR;/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/RAP_RTFDDA/<cyclestr offset="-#valid_offset#:00:00">qc_out_@Y-@m-@d_@H:00:00.GRM_P+FCST</cyclestr></datadep>
+      </dependency>
+    </task>
+    
+    <!-- Reformat MDV radar data into GRIB for this valid time -->
+    <task name="rfmt_obs_radar_h#valid_offset#" maxtries="3" cycledefs="6hourly">
+      <command>
+        &BIN_DIR;/run_command.ksh &BIN_DIR;/rfmt_obs_radar.pl
+        <cyclestr offset="-#valid_offset#:00:00">&RADAR_DATA_DIR;/@Y@m@d/@H0000.mdv</cyclestr>
+      </command>
+      <account>&PROJECT;</account>
+      <queue>&QUEUE;</queue>
+      <cores>1</cores>
+      <walltime>&RFMT_WALLTIME;</walltime>
+      <join>&LOG_DIR;/rfmt_obs_radar/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/rfmt_obs_radar_@Y@m@d@H.log</cyclestr></join>
+      <jobname><cyclestr offset="-#valid_offset#:00:00">rfmt_obs_radar_@Y@m@d@H</cyclestr></jobname>
+      
+      <envar>
+        <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+      </envar>
+
+      <dependency>
+        <datadep age="120"><cyclestr offset="-#valid_offset#:00:00">&RADAR_DATA_DIR;/@Y@m@d/@H0000.mdv</cyclestr></datadep>
+      </dependency>
+    </task>
+
+    <!-- Begin metatask for models and domains -->
+    <metatask>
+
+      <var name="model">   pme_da            pme_da            pme_noda_c2d02      pme_noda_c2d03      pme_wrf22_c2d01     </var>
+      <var name="domain">  d02               d03               d02                 d02                 d02                 </var>
+      <var name="prefix">  wrf               wrf               pme_noda_c2d02      pme_noda_c2d03      pme_wrf22_c2d01     </var>
+      <var name="fcst_dir">&PME_DA_FCST_DIR; &PME_DA_FCST_DIR; &PME_NODA_FCST_DIR; &PME_NODA_FCST_DIR; &PME_WRF22_FCST_DIR;</var>
+
+      <!-- Verify against point observations -->
+      <task name="met_point_verf_h#valid_offset#_#model#_#domain#" maxtries="3" cycledefs="6hourly">
+        <command>
+          &BIN_DIR;/run_command.ksh &BIN_DIR;/met_point_verf.pl
+          #model# <cyclestr offset="-#valid_offset#:00:00">@Y@m@d@H</cyclestr> #domain#
+        </command>
+        <account>&PROJECT;</account>
+        <queue>&QUEUE;</queue>
+        <cores>1</cores>
+        <walltime>&VX_WALLTIME;</walltime>
+        <join>&LOG_DIR;/met_point_verf/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/met_point_verf_@Y@m@d@H_#model#_#domain#.log</cyclestr></join>
+        <jobname><cyclestr offset="-#valid_offset#:00:00">met_point_verf_@Y@m@d@H_#model#_#domain#</cyclestr></jobname>
+      
+        <envar>
+          <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+        </envar>
+
+        <dependency>
+          <and>
+            <taskdep task="rfmt_obs_little_r_h#valid_offset#"/>
+            <or>
+              <datadep age="120">#fcst_dir#/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/<cyclestr offset="-#valid_offset#:00:00">#prefix#_#domain#_@Y@m@d@H@M.grb</cyclestr></datadep>
+              <timedep><cyclestr offset="&VX_DEADLINE;">@Y@m@d@H@M@S</cyclestr></timedep>
+            </or>
+          </and>
+        </dependency>
+      </task>
+
+      <!-- Verify against gridded observations -->
+      <task name="met_grid_verf_h#valid_offset#_#model#_#domain#" maxtries="3" cycledefs="6hourly">
+        <command>
+          &BIN_DIR;/run_command.ksh &BIN_DIR;/met_grid_verf.pl
+          #model# <cyclestr offset="-#valid_offset#:00:00">@Y@m@d@H</cyclestr> #domain#
+        </command>
+        <account>&PROJECT;</account>
+        <queue>&QUEUE;</queue>
+        <cores>1</cores>
+        <walltime>&VX_WALLTIME;</walltime>
+        <join>&LOG_DIR;/met_grid_verf/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/met_grid_verf_@Y@m@d@H_#model#_#domain#.log</cyclestr></join>
+        <jobname><cyclestr offset="-#valid_offset#:00:00">met_grid_verf_@Y@m@d@H_#model#_#domain#</cyclestr></jobname>
+      
+        <envar>
+          <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+        </envar>
+
+        <dependency>
+          <and>
+            <taskdep task="rfmt_obs_radar_h#valid_offset#"/>
+            <or>
+              <datadep age="120">#fcst_dir#/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/<cyclestr offset="-#valid_offset#:00:00">#prefix#_#domain#_@Y@m@d@H@M.grb</cyclestr></datadep>
+              <timedep><cyclestr offset="&VX_DEADLINE;">@Y@m@d@H@M@S</cyclestr></timedep>
+            </or>
+          </and>
+        </dependency>
+      </task>
+    
+    <!-- End metatask for domains -->
+    </metatask>
+
+  <!-- End metatask for PME valid time offsets -->
+  </metatask>
+
+  <!-- Begin metatask for GFS valid time offsets -->
+  <metatask>
+
+    <!-- Time offset from the valid time to the cycle time -->
+    <!-- Verify the GFS model 3-hourly -->
+    <var name="valid_offset">5 8</var>
+
+    <!-- Begin metatask for models and domains -->
+    <metatask>
+
+      <var name="model">   gfs            gfs           </var>
+      <var name="domain">  d02            d03           </var>
+      <var name="prefix">  gfs4           gfs4          </var>
+      <var name="fcst_dir">&GFS_FCST_DIR; &GFS_FCST_DIR;</var>
+
+      <!-- Verify against point observations -->
+      <task name="met_point_verf_h#valid_offset#_#model#_#domain#" maxtries="3" cycledefs="6hourly">
+        <command>
+          &BIN_DIR;/run_command.ksh &BIN_DIR;/met_point_verf.pl
+          #model# <cyclestr offset="-#valid_offset#:00:00">@Y@m@d@H</cyclestr> #domain#
+        </command>
+        <account>&PROJECT;</account>
+        <queue>&QUEUE;</queue>
+        <cores>1</cores>
+        <walltime>&VX_WALLTIME;</walltime>
+        <join>&LOG_DIR;/met_point_verf/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/met_point_verf_@Y@m@d@H_#model#_#domain#.log</cyclestr></join>
+        <jobname><cyclestr offset="-#valid_offset#:00:00">met_point_verf_@Y@m@d@H_#model#_#domain#</cyclestr></jobname>
+      
+        <envar>
+          <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+        </envar>
+
+        <dependency>
+          <and>
+            <taskdep task="rfmt_obs_little_r_h#valid_offset#"/>
+            <or>
+              <datadep age="120">#fcst_dir#/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/<cyclestr offset="-#valid_offset#:00:00">#prefix#_#domain#_@Y@m@d@H@M.grb</cyclestr></datadep>
+              <timedep><cyclestr offset="&VX_DEADLINE;">@Y@m@d@H@M@S</cyclestr></timedep>
+            </or>
+          </and>
+        </dependency>
+      </task>
+
+      <!-- Verify against gridded observations -->
+      <task name="met_grid_verf_h#valid_offset#_#model#_#domain#" maxtries="3" cycledefs="6hourly">
+        <command>
+          &BIN_DIR;/run_command.ksh &BIN_DIR;/met_grid_verf.pl
+          #model# <cyclestr offset="-#valid_offset#:00:00">@Y@m@d@H</cyclestr> #domain#
+        </command>
+        <account>&PROJECT;</account>
+        <queue>&QUEUE;</queue>
+        <cores>1</cores>
+        <walltime>&VX_WALLTIME;</walltime>
+        <join>&LOG_DIR;/met_grid_verf/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/met_grid_verf_@Y@m@d@H_#model#_#domain#.log</cyclestr></join>
+        <jobname><cyclestr offset="-#valid_offset#:00:00">met_grid_verf_@Y@m@d@H_#model#_#domain#</cyclestr></jobname>
+      
+        <envar>
+          <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+        </envar>
+
+        <dependency>
+          <and>
+            <taskdep task="rfmt_obs_radar_h#valid_offset#"/>
+            <or>
+              <datadep age="120">#fcst_dir#/<cyclestr offset="&INIT_OFFSET;">@Y@m@d@H</cyclestr>/<cyclestr offset="-#valid_offset#:00:00">#prefix#_#domain#_@Y@m@d@H@M.grb</cyclestr></datadep>
+              <timedep><cyclestr offset="&VX_DEADLINE;">@Y@m@d@H@M@S</cyclestr></timedep>
+            </or>
+          </and>
+        </dependency>
+      </task>
+    
+    <!-- End metatask for domains -->
+    </metatask>
+
+  <!-- End metatask for GFS valid time offsets -->
+  </metatask>
+  
+  <!-- Begin metatask for valid time offsets -->
+  <metatask>
+
+    <!-- Time offset from the valid time to the cycle time -->
+    <var name="valid_offset">3 4 5 6 7 8</var>
+    <var name="task_dep_met_point_verf_gfs_d02">
+      met_point_verf_h3_pme_da_d02
+      met_point_verf_h4_pme_da_d02
+      met_point_verf_h5_gfs_d02
+      met_point_verf_h6_pme_da_d02
+      met_point_verf_h7_pme_da_d02
+      met_point_verf_h8_gfs_d02
+    </var>
+    <var name="task_dep_met_point_verf_gfs_d03">
+      met_point_verf_h3_pme_da_d03
+      met_point_verf_h4_pme_da_d03
+      met_point_verf_h5_gfs_d03
+      met_point_verf_h6_pme_da_d03
+      met_point_verf_h7_pme_da_d03
+      met_point_verf_h8_gfs_d03
+    </var>
+    <var name="task_dep_met_grid_verf_gfs_d02">
+      met_grid_verf_h3_pme_da_d02
+      met_grid_verf_h4_pme_da_d02
+      met_grid_verf_h5_gfs_d02
+      met_grid_verf_h6_pme_da_d02
+      met_grid_verf_h7_pme_da_d02
+      met_grid_verf_h8_gfs_d02
+    </var>
+    <var name="task_dep_met_grid_verf_gfs_d03">
+      met_grid_verf_h3_pme_da_d03
+      met_grid_verf_h4_pme_da_d03
+      met_grid_verf_h5_gfs_d03
+      met_grid_verf_h6_pme_da_d03
+      met_grid_verf_h7_pme_da_d03
+      met_grid_verf_h8_gfs_d03
+    </var>
+
+    <!-- Load MET output into METViewer -->
+    <task name="metv_load_valid_h#valid_offset#" maxtries="3" cycledefs="6hourly">
+      <command>
+        &BIN_DIR;/run_command.ksh &BIN_DIR;/metv_load_valid.pl
+        <cyclestr offset="-#valid_offset#:00:00">@Y@m@d@H</cyclestr> pme_da_d02 pme_da_d03 pme_noda_c2d02_d02 pme_noda_c2d03_d02 pme_wrf22_c2d01_d02 gfs_d02 gfs_d03
+      </command>
+      <account>&PROJECT;</account>
+      <queue>&QUEUE;</queue>
+      <cores>1</cores>
+      <walltime>&METV_WALLTIME;</walltime>
+      <join>&LOG_DIR;/metv_load_valid/<cyclestr offset="-#valid_offset#:00:00">@Y@m@d/metv_load_valid_@Y@m@d@H.log</cyclestr></join>
+      <jobname><cyclestr offset="-#valid_offset#:00:00">metv_load_valid_@Y@m@d@H</cyclestr></jobname>
+
+      <envar>
+        <name>VXUTIL_CONST</name> <value>&VXUTIL_CONST;</value>
+      </envar>
+
+      <dependency>
+        <or>
+          <and>
+            <taskdep task="#task_dep_met_point_verf_gfs_d02#"/>
+            <taskdep task="#task_dep_met_point_verf_gfs_d03#"/>
+            <taskdep task="met_point_verf_h#valid_offset#_pme_da_d02"/>
+            <taskdep task="met_point_verf_h#valid_offset#_pme_da_d03"/>
+            <taskdep task="met_point_verf_h#valid_offset#_pme_noda_c2d02_d02"/>
+            <taskdep task="met_point_verf_h#valid_offset#_pme_noda_c2d03_d02"/>
+            <taskdep task="met_point_verf_h#valid_offset#_pme_wrf22_c2d01_d02"/>
+            <taskdep task="#task_dep_met_grid_verf_gfs_d02#"/>
+            <taskdep task="#task_dep_met_grid_verf_gfs_d03#"/>
+            <taskdep task="met_grid_verf_h#valid_offset#_pme_da_d02"/>
+            <taskdep task="met_grid_verf_h#valid_offset#_pme_da_d03"/>
+            <taskdep task="met_grid_verf_h#valid_offset#_pme_noda_c2d02_d02"/>
+            <taskdep task="met_grid_verf_h#valid_offset#_pme_noda_c2d03_d02"/>
+            <taskdep task="met_grid_verf_h#valid_offset#_pme_wrf22_c2d01_d02"/>
+          </and>
+          <timedep><cyclestr offset="&METV_DEADLINE;">@Y@m@d@H@M@S</cyclestr></timedep>
+        </or>
+      </dependency>
+    </task>
+
+  <!-- End metatask for valid time offsets -->
+  </metatask>
+
+</workflow>

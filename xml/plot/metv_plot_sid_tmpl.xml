@@ -1,0 +1,384 @@
+<plot_spec>
+  <connection>
+    <host>localhost</host>
+    <database>mv_saudi_gwpme</database>
+    <user>mvuser</user>
+    <password>ahquunoghahch8layeiThaig</password>
+  </connection>
+
+  <rscript>/usr/local/bin/Rscript</rscript>
+  <folders>
+    <r_tmpl>/d1/pmemet/metviewer/R_tmpl</r_tmpl>
+    <r_work>/d2/pmemet/metv/R_work</r_work>
+    <plots>/d2/pmemet/metv/plots</plots>
+  </folders>
+
+  <date_range name="day">   <start>{day_beg}</start>   <end>{day_end}</end>   </date_range>
+  <date_range name="week">  <start>{week_beg}</start>  <end>{week_end}</end>  </date_range>
+  <date_range name="month"> <start>{month_beg}</start> <end>{month_end}</end> </date_range>
+  <date_range name="season"><start>{season_beg}</start><end>{season_end}</end></date_range>
+  <date_range name="year">  <start>{year_beg}</start>  <end>{year_end}</end>  </date_range>
+
+  <plot name="pme_lead" run="false">
+    <template>series_plot.R_tmpl</template>
+      <series1>
+        <field name="model">
+          <val>pme_da_d02</val>
+          <val>pme_noda_c2d02_d02</val>
+        </field>
+      </series1>
+      <series2/>
+      <plot_fix>
+        <field name="fcst_init_beg">
+          <date_range name="week"/>
+          <date_range name="month"/>
+          <date_range name="season"/>
+        </field>
+        <field name="init_hour">
+          <val>{init_hh}</val>
+        </field>
+        <field name="vx_mask">
+          <val>OEAB</val>
+          <val>OEAH</val>
+          <val>OEBA</val>
+          <val>OEBH</val>
+          <val>OEDF</val>
+          <val>OEDR</val>
+          <val>OEDW</val>
+          <val>OEGN</val>
+          <val>OEGS</val>
+          <val>OEGT</val>
+          <val>OEHL</val>
+          <val>OEJB</val>
+          <val>OEJD</val>
+          <val>OEJN</val>
+          <val>OEKK</val>
+          <val>OEKJ</val>
+          <val>OEKM</val>
+          <val>OEMA</val>
+          <val>OEMK</val>
+          <val>OENG</val>
+          <val>OEPA</val>
+          <val>OERF</val>
+          <val>OERK</val>
+          <val>OERR</val>
+          <val>OERY</val>
+          <val>OESH</val>
+          <val>OESK</val>
+          <val>OETB</val>
+          <val>OETF</val>
+          <val>OETR</val>
+          <val>OEWD</val>
+          <val>OEWJ</val>
+          <val>OEYN</val>
+        </field>
+      </plot_fix>
+
+      <plot_cond/>
+
+      <indep name="fcst_lead">
+        <val label="0" plot_val="">0</val>
+        <val label="6" plot_val="">60000</val>
+        <val label="12" plot_val="">120000</val>
+        <val label="18" plot_val="">180000</val>
+        <val label="24" plot_val="">240000</val>
+        <val label="30" plot_val="">300000</val>
+        <val label="36" plot_val="">360000</val>
+        <val label="42" plot_val="">420000</val>
+        <val label="48" plot_val="">480000</val>
+      </indep>
+
+      <plot_stat>median</plot_stat>
+
+      <tmpl>
+
+        <val_map name="agg_to_season">
+          <pair> <key>day</key>    <val>Day</val> </pair>
+          <pair> <key>week</key>   <val>Week</val> </pair>
+          <pair> <key>month</key>  <val>Month</val> </pair>
+          <pair> <key>season</key> <val>Season</val> </pair>
+          <pair> <key>year</key>   <val>Year</val> </pair>
+        </val_map>
+
+        <val_map name="agg_to_date">
+          <pair> <key>day</key>    <val>{init_yyyymmdd}</val> </pair>
+          <pair> <key>week</key>   <val>{week_yyyymmdd}</val> </pair>
+          <pair> <key>month</key>  <val>{init_yyyymm}</val> </pair>
+          <pair> <key>season</key> <val>{season_str}-{season_yyyy}</val> </pair>
+          <pair> <key>year</key>   <val>{init_yyyy}</val> </pair>
+        </val_map>
+
+        <val_map name="agg_to_string">
+          <pair> <key>day</key>    <val>Day-{init_yyyymmdd}</val> </pair>
+          <pair> <key>week</key>   <val>Week-{week_yyyymmdd}</val> </pair>
+          <pair> <key>month</key>  <val>Month-{init_yyyymm}</val> </pair>
+          <pair> <key>season</key> <val>{season_str}-{season_yyyy}</val> </pair>
+          <pair> <key>year</key>   <val>Year-{init_yyyy}</val> </pair>
+        </val_map>
+
+        <val_map name="fcst_var">
+          <pair> <key>PRMSL</key>   <val>Mean Sea Level Pressure (Pa)</val> </pair>
+          <pair> <key>TMP</key>     <val>Temperature (C)</val> </pair>
+          <pair> <key>RH</key>      <val>Relative Humidity (%) </val> </pair>
+          <pair> <key>WIND</key>    <val>Wind (m/s)</val> </pair>
+          <pair> <key>HGT</key>     <val>Geopotential Height (m)</val> </pair>
+          <pair> <key>APCP_06</key> <val>6hr Accumulated Precipitation (mm)</val> </pair>
+          <pair> <key>APCP_03</key> <val>3hr Accumulated Precipitation (mm)</val> </pair>
+        </val_map>
+
+        <val_map name="stat">
+          <pair> <key>ME</key> <val>Bias (underfcst.lt0; perfect=0; overfcst.gt0)</val> </pair>
+          <pair> <key>BCRMSE</key> <val>Bias Corr. RMSE (perfect=0)</val> </pair>
+          <pair> <key>RMSE</key> <val>RMSE (perfect=0)</val> </pair>
+          <pair> <key>MAE</key> <val>MAE (perfect=0)</val> </pair>
+        </val_map> 
+
+        <val_map name="level">
+          <pair> <key>Z0</key>   <val>Surface</val> </pair>
+          <pair> <key>Z2</key>   <val>2M</val> </pair>
+          <pair> <key>Z10</key>  <val>10M</val> </pair>
+          <pair> <key>P850</key> <val>850mb</val> </pair>
+          <pair> <key>P700</key> <val>700mb</val> </pair>
+          <pair> <key>P500</key> <val>500mb</val> </pair>
+          <pair> <key>A3</key>   <val></val> </pair>
+          <pair> <key>A6</key>   <val></val> </pair>
+        </val_map>
+
+        <!-- Naming convention:
+               Directory: {fcst_init_beg}/YYYY[MM[DD]]
+               File Name: {fcst_init_beg}_YYYY[MM[DD]]_{fcst_var}_{fcst_lev}_{stat}_{vx_mask}_{init_hour}.png
+        -->
+        
+        <data_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_lev}_{dep1_1_stat1}_{vx_mask}_{init_hour?format=HH}Z.data</data_file>
+        <plot_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_lev}_{dep1_1_stat1}_{vx_mask}_{init_hour?format=HH}Z.png</plot_file>
+        <r_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_lev}_{dep1_1_stat1}_{vx_mask}_{init_hour?format=HH}Z.R</r_file>
+        
+        <title>{vx_mask} station {fcst_lev?map=level} {dep1_1?map=fcst_var} for {fcst_init_beg?map=agg_to_string}  Init-{init_hour?format=HH}Z</title>
+        <x_label>Forecast Lead Time (hours)</x_label>
+        <y1_label>{dep1_1_stat1?map=stat}</y1_label>
+        <y2_label></y2_label>
+        <caption>Generated on {cur_yyyymmddhh}</caption>
+      </tmpl>
+
+      <event_equal>true</event_equal>
+      <event_equal_m>false</event_equal_m>
+      <vert_plot>false</vert_plot>
+      <x_reverse>false</x_reverse>
+      <num_stats>true</num_stats>
+      <indy1_stag>true</indy1_stag>
+      <indy2_stag>false</indy2_stag>
+      <grid_on>true</grid_on>
+      <sync_axes>false</sync_axes>
+      <dump_points1>false</dump_points1>
+      <dump_points2>false</dump_points2>
+      <log_y1>false</log_y1>
+      <log_y2>false</log_y2>
+      <varianceInflationFactor>true</varianceInflationFactor>
+      <plot_type>png16m</plot_type>
+      <plot_height>8.5</plot_height>
+      <plot_width>11</plot_width>
+      <plot_res>72</plot_res>
+      <plot_units>in</plot_units>
+      <mar>c(8, 4, 5, 4)</mar>
+      <mgp>c(1, 1, 0)</mgp>
+      <cex>1</cex>
+      <title_weight>2</title_weight>
+      <title_size>1.6</title_size>
+      <title_offset>-2</title_offset>
+      <title_align>.5</title_align>
+      <xtlab_orient>1</xtlab_orient>
+      <xtlab_perp>-.75</xtlab_perp>
+      <xtlab_horiz>.5</xtlab_horiz>
+      <xtlab_freq>0</xtlab_freq>
+      <xtlab_size>1.5</xtlab_size>
+      <xlab_weight>2</xlab_weight>
+      <xlab_size>1.5</xlab_size>
+      <xlab_offset>2</xlab_offset>
+      <xlab_align>.5</xlab_align>
+      <ytlab_orient>1</ytlab_orient>
+      <ytlab_perp>.5</ytlab_perp>
+      <ytlab_horiz>.5</ytlab_horiz>
+      <ytlab_size>1.5</ytlab_size>
+      <ylab_weight>2</ylab_weight>
+      <ylab_size>1.5</ylab_size>
+      <ylab_offset>-2</ylab_offset>
+      <ylab_align>.5</ylab_align>
+      <grid_lty>3</grid_lty>
+      <grid_col>#454545</grid_col>
+      <grid_lwd>1.5</grid_lwd>
+      <grid_x>listX</grid_x>
+      <x2tlab_orient>1</x2tlab_orient>
+      <x2tlab_perp>1</x2tlab_perp>
+      <x2tlab_horiz>.5</x2tlab_horiz>
+      <x2tlab_size>1.4</x2tlab_size>
+      <x2lab_weight>1</x2lab_weight>
+      <x2lab_size>1.3</x2lab_size>
+      <x2lab_offset>-.5</x2lab_offset>
+      <x2lab_align>.5</x2lab_align>
+      <y2tlab_orient>1</y2tlab_orient>
+      <y2tlab_perp>.5</y2tlab_perp>
+      <y2tlab_horiz>.5</y2tlab_horiz>
+      <y2tlab_size>1</y2tlab_size>
+      <y2lab_weight>1</y2lab_weight>
+      <y2lab_size>1</y2lab_size>
+      <y2lab_offset>1</y2lab_offset>
+      <y2lab_align>.5</y2lab_align>
+      <legend_size>.8</legend_size>
+      <legend_box>o</legend_box>
+      <legend_inset>c(0, -.25)</legend_inset>
+      <legend_ncol>3</legend_ncol>
+      <caption_weight>1</caption_weight>
+      <caption_col>#333333FF</caption_col>
+      <caption_size>.8</caption_size>
+      <caption_offset>3</caption_offset>
+      <caption_align>0</caption_align>
+      <box_pts>FALSE</box_pts>
+      <box_outline>TRUE</box_outline>
+      <box_boxwex>.2</box_boxwex>
+      <box_notch>FALSE</box_notch>
+      <box_avg>FALSE</box_avg>
+      <rely_event_hist>TRUE</rely_event_hist>
+      <ci_alpha>.05</ci_alpha>
+      <ensss_pts>-1</ensss_pts>
+      <ensss_pts_disp>TRUE</ensss_pts_disp>
+      <plot_ci>c("std", "std")</plot_ci>
+      <plot_disp>c(TRUE, TRUE)</plot_disp>
+      <colors>c("green4", "red")</colors>
+      <pch>c(20, 20)</pch>
+      <type>c("b", "b")</type>
+      <lty>c(1, 1)</lty>
+      <lwd>c(2, 2)</lwd>
+      <con_series>c(1, 1)</con_series>
+      <legend>c("PME - DA", "PME - noDA")</legend>
+      <y1_lim/>
+      <y1_bufr>.04</y1_bufr>
+      <y2_lim>c(0,1)</y2_lim>
+      <y2_bufr>0</y2_bufr>
+    </plot>
+
+    <!-- Begin plot templates for various level types -->
+
+    <plot name="pme_lead_prmsl_lev" run="false" inherits="pme_lead">
+      <plot_fix>
+        <field name="fcst_lev">
+          <val>Z0</val>
+        </field>
+        <field name="interp_mthd">
+          <val>BILIN</val>
+        </field>
+      </plot_fix>
+    </plot>
+
+    <plot name="pme_lead_tmp_lev" run="false" inherits="pme_lead">
+      <plot_fix>
+        <field name="fcst_lev">
+          <val>Z2</val>
+        </field>
+        <field name="interp_mthd">
+          <val>BILIN</val>
+        </field>
+      </plot_fix>
+    </plot>
+
+    <plot name="pme_lead_wind_lev" run="false" inherits="pme_lead">
+      <plot_fix>
+        <field name="fcst_lev">
+          <val>Z10</val>
+        </field>
+        <field name="interp_mthd">
+          <val>BILIN</val>
+        </field>
+      </plot_fix>
+    </plot>
+    
+    <!-- End plot templates for various level types -->
+
+    <!-- Begin plots for PRMSL -->
+
+    <plot name="pme_lead_prmsl_me" inherits="pme_lead_prmsl_lev">
+      <dep>
+        <dep1><fcst_var name="PRMSL"><stat>ME</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-500,500)</y1_lim>
+    </plot>
+
+    <plot name="pme_lead_prmsl_mae" inherits="pme_lead_prmsl_lev">
+      <dep>
+        <dep1><fcst_var name="PRMSL"><stat>MAE</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-100,500)</y1_lim>
+    </plot>
+
+    <!-- End plots for PRMSL -->
+
+    <!-- Begin plots for TMP -->
+
+    <plot name="pme_lead_tmp_me" inherits="pme_lead_tmp_lev">
+      <dep>
+        <dep1><fcst_var name="TMP"><stat>ME</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-5,5)</y1_lim>
+    </plot>
+
+    <plot name="pme_lead_tmp_mae" inherits="pme_lead_tmp_lev">
+      <dep>
+        <dep1><fcst_var name="TMP"><stat>MAE</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-1,5)</y1_lim>
+    </plot>
+
+    <!-- End plots for TMP -->
+
+    <!-- Begin plots for RH -->
+
+    <plot name="pme_lead_rh_me" inherits="pme_lead_tmp_lev">
+      <dep>
+        <dep1><fcst_var name="RH"><stat>ME</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-40,40)</y1_lim>
+    </plot>
+
+    <plot name="pme_lead_rh_mae" inherits="pme_lead_tmp_lev">
+      <dep>
+        <dep1><fcst_var name="RH"><stat>MAE</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-8,40)</y1_lim>
+    </plot>
+
+    <!-- End plots for RH -->
+
+    <!-- Begin plots for WIND -->
+
+    <plot name="pme_lead_wind_me" inherits="pme_lead_wind_lev">
+      <dep>
+        <dep1><fcst_var name="WIND"><stat>ME</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-8,8)</y1_lim>
+    </plot>
+
+    <plot name="pme_lead_wind_mae" inherits="pme_lead_wind_lev">
+      <dep>
+        <dep1><fcst_var name="WIND"><stat>MAE</stat></fcst_var></dep1>
+        <dep2/>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-1.6,8)</y1_lim>
+    </plot>
+
+    <!-- End plots for WIND -->
+
+</plot_spec>

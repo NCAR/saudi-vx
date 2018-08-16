@@ -1,0 +1,52 @@
+<load_spec>
+	<connection>
+		<host>localhost:3306</host>
+		<database>mv_saudi_gwpme</database>
+		<user>mvuser</user>
+		<password>ahquunoghahch8layeiThaig</password>
+	</connection>
+	
+	<date_list name="valid_date_list">
+		<start>2012102318</start>
+		<end>2012110217</end>
+		<inc>3600</inc>
+		<format>yyyyMMddHH</format>
+	</date_list>
+
+	<load_val>
+		<field name="model">
+			<val>gfs_d02</val>
+			<val>gfs_d03</val>
+			<val>pme_da_d02</val>
+			<val>pme_da_d03</val>
+			<val>pme_noda_c2d02_d02</val>
+			<val>pme_noda_c2d03_d03</val>
+		</field>
+		<field name="valid">
+			<date_list name="valid_date_list"/>
+		</field>
+		<field name="output_type">
+			<val>grid_stat</val>
+			<val>point_stat</val>
+			<val>mode</val>
+		</field>
+	</load_val>
+	
+	<folder_tmpl>/d2/pmemet/met_out/{model}/{valid}/{output_type}/</folder_tmpl>
+
+	<met_version>V4.1</met_version>
+
+	<verbose>false</verbose>
+	<insert_size>1</insert_size>
+	<mode_header_db_check>true</mode_header_db_check>
+	<stat_header_db_check>true</stat_header_db_check>
+	<drop_indexes>false</drop_indexes>
+	<apply_indexes>false</apply_indexes>
+
+	<load_stat>true</load_stat>
+	<load_mode>true</load_mode>
+	<load_mpr>false</load_mpr>
+	<load_orank>false</load_orank>
+	<load_xml>true</load_xml>
+	<load_note>Load all Saudi GWPME MET output.</load_note>
+</load_spec>

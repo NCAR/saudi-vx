@@ -1,0 +1,285 @@
+Generating full d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/d02_sample.grib
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Masking Grid:	d02_Full (393 x 348)
+DEBUG 2: Points Inside Mask:	136764 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Full_mask.nc
+Generating full d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/d03_sample.grib
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Masking Grid:	d03_Full (429 x 417)
+DEBUG 2: Points Inside Mask:	178893 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Full_mask.nc
+Generating d03 subset mask for d02...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/d03_sample.grib
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Masking Grid:	d02_Sub_d03 (429 x 417)
+DEBUG 2: Points Inside Mask:	19877 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Sub_d03_mask.nc
+Working on province "Jizan"...
+CALLING: qx(grep "Jizan" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Jizan containing 134 points
+DEBUG 2: Points Inside Mask:	233 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Jizan_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Jizan containing 134 points
+DEBUG 2: Points Inside Mask:	2075 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Jizan_prov_mask.nc
+Working on province "Al Jawf"...
+CALLING: qx(grep "Al Jawf" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Jawf containing 226 points
+DEBUG 2: Points Inside Mask:	1263 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Jawf_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Jawf containing 226 points
+DEBUG 2: Points Inside Mask:	0 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Jawf_prov_mask.nc
+Working on province "Ha'il"...
+CALLING: qx(grep "Ha'il" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Hail containing 388 points
+DEBUG 2: Points Inside Mask:	2227 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Hail_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Hail containing 388 points
+DEBUG 2: Points Inside Mask:	0 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Hail_prov_mask.nc
+Working on province "Ash Sharqiyah"...
+CALLING: qx(grep "Ash Sharqiyah" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Sharqiyah containing 305 points
+DEBUG 2: Points Inside Mask:	9541 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Sharqiyah_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Sharqiyah containing 305 points
+DEBUG 2: Points Inside Mask:	0 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Sharqiyah_prov_mask.nc
+Working on province "Al Qasim"...
+CALLING: qx(grep "Al Qasim" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Qasim containing 276 points
+DEBUG 2: Points Inside Mask:	983 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Qasim_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Qasim containing 276 points
+DEBUG 2: Points Inside Mask:	1466 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Qasim_prov_mask.nc
+Working on province "'Asir"...
+CALLING: qx(grep "'Asir" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Asir containing 325 points
+DEBUG 2: Points Inside Mask:	1256 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Asir_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Asir containing 325 points
+DEBUG 2: Points Inside Mask:	11333 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Asir_prov_mask.nc
+Working on province "Al Madinah"...
+CALLING: qx(grep "Al Madinah" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Madinah containing 508 points
+DEBUG 2: Points Inside Mask:	2543 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Madinah_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Madinah containing 508 points
+DEBUG 2: Points Inside Mask:	14806 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Madinah_prov_mask.nc
+Working on province "Tabuk"...
+CALLING: qx(grep "Tabuk" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Tabuk containing 498 points
+DEBUG 2: Points Inside Mask:	1812 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Tabuk_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Tabuk containing 498 points
+DEBUG 2: Points Inside Mask:	767 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Tabuk_prov_mask.nc
+Working on province "Najran"...
+CALLING: qx(grep "Najran" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Najran containing 104 points
+DEBUG 2: Points Inside Mask:	1420 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Najran_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Najran containing 104 points
+DEBUG 2: Points Inside Mask:	12070 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Najran_prov_mask.nc
+Working on province "Al Qurayyat"...
+CALLING: qx(grep "Al Qurayyat" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Qurayyat containing 237 points
+DEBUG 2: Points Inside Mask:	989 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Qurayyat_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Qurayyat containing 237 points
+DEBUG 2: Points Inside Mask:	0 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Qurayyat_prov_mask.nc
+Working on province "Al Bahah"...
+CALLING: qx(grep "Al Bahah" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Bahah containing 132 points
+DEBUG 2: Points Inside Mask:	164 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Bahah_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Bahah containing 132 points
+DEBUG 2: Points Inside Mask:	1522 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Bahah_prov_mask.nc
+Working on province "Makkah"...
+CALLING: qx(grep "Makkah" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Makkah containing 577 points
+DEBUG 2: Points Inside Mask:	2329 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Makkah_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Makkah containing 577 points
+DEBUG 2: Points Inside Mask:	20904 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Makkah_prov_mask.nc
+Working on province "Ar Riyad"...
+CALLING: qx(grep "Ar Riyad" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Riyad containing 430 points
+DEBUG 2: Points Inside Mask:	6464 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Riyad_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Riyad containing 430 points
+DEBUG 2: Points Inside Mask:	43777 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Riyad_prov_mask.nc
+Working on province "Al Hudud ash Shamaliyah"...
+CALLING: qx(grep "Al Hudud ash Shamaliyah" in/Saudi_provinces.txt)
+Generating d02 mask...
+DEBUG 1: Input Data File:	in/d02_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (393 x 348)
+DEBUG 2: Parsed Polyline:	d02_Hudud containing 298 points
+DEBUG 2: Points Inside Mask:	2430 of 136764
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Hudud_prov_mask.nc
+Generating d03 mask...
+DEBUG 1: Input Data File:	in/d03_sample.grib
+DEBUG 1: Input Mask File:	in/mask.poly
+DEBUG 2: Parsed Input Grid:	Mercator (429 x 417)
+DEBUG 2: Parsed Polyline:	d03_Hudud containing 298 points
+DEBUG 2: Points Inside Mask:	0 of 178893
+DEBUG 1: Output NetCDF File:	/d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Hudud_prov_mask.nc
+Merging the d02 masks...
+Creating /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Saudi_mask.nc 
+Reading 14 poly mask files...
+Reading[1]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Asir_prov_mask.nc
+Reading[2]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Bahah_prov_mask.nc
+Reading[3]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Hail_prov_mask.nc
+Reading[4]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Hudud_prov_mask.nc
+Reading[5]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Jawf_prov_mask.nc
+Reading[6]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Jizan_prov_mask.nc
+Reading[7]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Madinah_prov_mask.nc
+Reading[8]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Makkah_prov_mask.nc
+Reading[9]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Najran_prov_mask.nc
+Reading[10]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Qasim_prov_mask.nc
+Reading[11]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Qurayyat_prov_mask.nc
+Reading[12]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Riyad_prov_mask.nc
+Reading[13]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Sharqiyah_prov_mask.nc
+Reading[14]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Tabuk_prov_mask.nc
+Plotting the d02 masks...
+DEBUG 1: Opening data file: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Saudi_mask.nc
+DEBUG 1: Creating postscript file: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d02_Saudi_mask.ps
+Merging the d03 masks...
+Creating /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Saudi_mask.nc 
+Reading 14 poly mask files...
+Reading[1]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Asir_prov_mask.nc
+Reading[2]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Bahah_prov_mask.nc
+Reading[3]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Hail_prov_mask.nc
+Reading[4]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Hudud_prov_mask.nc
+Reading[5]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Jawf_prov_mask.nc
+Reading[6]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Jizan_prov_mask.nc
+Reading[7]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Madinah_prov_mask.nc
+Reading[8]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Makkah_prov_mask.nc
+Reading[9]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Najran_prov_mask.nc
+Reading[10]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Qasim_prov_mask.nc
+Reading[11]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Qurayyat_prov_mask.nc
+Reading[12]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Riyad_prov_mask.nc
+Reading[13]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Sharqiyah_prov_mask.nc
+Reading[14]: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Tabuk_prov_mask.nc
+Plotting the d03 masks...
+DEBUG 1: Opening data file: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Saudi_mask.nc
+DEBUG 1: Creating postscript file: /d1/pmemet/projects/saudi/rtf3h/pmemet/user/config/mask/d03_Saudi_mask.ps

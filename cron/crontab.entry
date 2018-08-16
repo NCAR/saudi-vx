@@ -1,0 +1,53 @@
+MAILTO=johnhg@ucar.edu
+VXUTIL_CONST=/d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/constants.proj
+
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+
+# Run rsync to transfer over the hourly radar data from saudi-c2 to saudi-c3
+0 * * * * /usr/bin/rsync -a -e "/usr/bin/ssh -i /home/pmemet/.ssh/saudi-c2-metpme-radar.rsa" metpme@saudi-c2:/home/zaki/radar/accum_1hr/ /d2/pmemet/obs/radar/accum_1hr/mdv/
+
+# Run workflows in realtime
+*/5 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_GFS_PreProc_2012_rt.ksh
+*/5 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_NODA_PreProc_2012_rt.ksh
+*/5 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_WRF22_PreProc_2012_rt.ksh
+*/5 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_RTFDDA_Vx_2012_rt.ksh
+
+# Run workflows in retrospective mode
+#*/3 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_GFS_PreProc_2012_retro.ksh
+#*/3 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_NODA_PreProc_2012_retro.ksh
+#*/3 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_WRF22_PreProc_2012_retro.ksh
+#*/3 * * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_PME_RTFDDA_Vx_2012_retro.ksh
+
+# Run rsync to transfer over the PME_NODA model GRIB output from saudi-c2 to saudi-c3
+0 * * * * /usr/bin/rsync --include='*d02*.grb1*' --include='*d03*.grb1*' --exclude='*' -a -e "/usr/bin/ssh -i /home/pmemet/.ssh/saudi-c2-metpme-pme-noda.rsa" metpme@saudi-c2:/raid/www_link/projects/WRF33/GESAUDI/GFS_WCTRL/grib/ /d2/pmemet/fcst/pme_noda_native/
+
+# Run rsync to transfer over the PME_WRF22 model GRIB output from saudi-c2 to saudi-c3
+0 * * * * /usr/bin/rsync --include='*d01*' --exclude='*' -a -e "/usr/bin/ssh -i /home/pmemet/.ssh/saudi-c2-metpme-pme-wrf22.rsa" metpme@saudi-c2:/raid/metpme/wrf22/ /d2/pmemet/fcst/pme_wrf22_native/
+
+# Run script to scrub old data
+30 0 * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/scrub_master.pl
+
+# Run the METViewer plotting scripts every 6 hours for the initialization 12 hours prior
+05 0,6,12,18 * * * /d1/pmemet/projects/saudi/rtf3h/pmemet/user/bin/run_metv_plot_init.sh
+

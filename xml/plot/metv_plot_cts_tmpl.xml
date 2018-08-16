@@ -1,0 +1,323 @@
+<plot_spec>
+    <connection>
+        <host>localhost</host>
+        <database>mv_saudi_gwpme</database>
+        <user>mvuser</user>
+        <password>ahquunoghahch8layeiThaig</password>
+    </connection>
+
+    <rscript>/usr/local/bin/Rscript</rscript>
+    <folders>
+        <r_tmpl>/d1/pmemet/metviewer/R_tmpl</r_tmpl>
+        <r_work>/d2/pmemet/metv/R_work</r_work>
+        <plots>/d2/pmemet/metv/plots</plots>
+    </folders>
+
+  <date_range name="day">   <start>{day_beg}</start>   <end>{day_end}</end>   </date_range>
+  <date_range name="week">  <start>{week_beg}</start>  <end>{week_end}</end>  </date_range>
+  <date_range name="month"> <start>{month_beg}</start> <end>{month_end}</end> </date_range>
+  <date_range name="season"><start>{season_beg}</start><end>{season_end}</end></date_range>
+  <date_range name="year">  <start>{year_beg}</start>  <end>{year_end}</end>  </date_range>
+
+  <plot name="pme_lead" run="false">
+    <template>series_plot.R_tmpl</template>
+      <series1>
+        <field name="model">
+          <val>pme_da_d02</val>
+          <val>pme_noda_c2d02_d02</val>
+        </field>
+      </series1>
+      <series2>
+        <field name="model">
+          <val>pme_da_d02</val>
+          <val>pme_noda_c2d02_d02</val>
+        </field>
+      </series2>
+      <plot_fix>
+        <field name="fcst_init_beg">
+          <date_range name="week"/>
+          <date_range name="month"/>
+          <date_range name="season"/>
+        </field>
+        <field name="init_hour">
+          <val>{init_hh}</val>
+        </field>
+        <field name="vx_mask">
+          <val>d02_Radar</val>
+        </field>
+        <field name="fcst_thresh">
+          <val>>0.000</val>
+          <val>>=0.400</val>
+        </field>
+        <field name="interp_mthd">
+          <val>UW_MEAN</val>
+        </field>
+      </plot_fix>
+
+      <indep name="fcst_lead">
+        <val label="0" plot_val="">0</val>
+        <val label="6" plot_val="">60000</val>
+        <val label="12" plot_val="">120000</val>
+        <val label="18" plot_val="">180000</val>
+        <val label="24" plot_val="">240000</val>
+        <val label="30" plot_val="">300000</val>
+        <val label="36" plot_val="">360000</val>
+        <val label="42" plot_val="">420000</val>
+        <val label="48" plot_val="">480000</val>
+      </indep>
+
+      <agg_stat>
+        <agg_ctc>true</agg_ctc>
+        <agg_sl1l2>false</agg_sl1l2>
+        <agg_pct>false</agg_pct>
+        <agg_nbrcnt>false</agg_nbrcnt>
+        <boot_repl>1000</boot_repl>
+        <boot_ci>perc</boot_ci>
+        <agg_diff1>FALSE</agg_diff1>
+        <agg_diff2>FALSE</agg_diff2>
+        <eveq_dis>FALSE</eveq_dis>
+      </agg_stat>
+
+      <tmpl>
+
+        <val_map name="agg_to_season">
+          <pair> <key>day</key>    <val>Day</val> </pair>
+          <pair> <key>week</key>   <val>Week</val> </pair>
+          <pair> <key>month</key>  <val>Month</val> </pair>
+          <pair> <key>season</key> <val>Season</val> </pair>
+          <pair> <key>year</key>   <val>Year</val> </pair>
+        </val_map>
+
+        <val_map name="agg_to_date">
+          <pair> <key>day</key>    <val>{init_yyyymmdd}</val> </pair>
+          <pair> <key>week</key>   <val>{week_yyyymmdd}</val> </pair>
+          <pair> <key>month</key>  <val>{init_yyyymm}</val> </pair>
+          <pair> <key>season</key> <val>{season_str}-{season_yyyy}</val> </pair>
+          <pair> <key>year</key>   <val>{init_yyyy}</val> </pair>
+        </val_map>
+
+        <val_map name="agg_to_string">
+          <pair> <key>day</key>    <val>Day-{init_yyyymmdd}</val> </pair>
+          <pair> <key>week</key>   <val>Week-{week_yyyymmdd}</val> </pair>
+          <pair> <key>month</key>  <val>Month-{init_yyyymm}</val> </pair>
+          <pair> <key>season</key> <val>{season_str}-{season_yyyy}</val> </pair>
+          <pair> <key>year</key>   <val>Year-{init_yyyy}</val> </pair>
+        </val_map>
+
+        <val_map name="fcst_var">
+          <pair> <key>APCP_06</key> <val>6hr Accumulated Precipitation</val> </pair>
+          <pair> <key>APCP_03</key> <val>3hr Accumulated Precipitation</val> </pair>
+        </val_map>
+
+        <val_map name="stat">
+          <pair> <key>PODY</key> <val>Prob of Detection (perfect=1)</val> </pair>
+          <pair> <key>FAR</key> <val>False Alarm Ratio (perfect=0)</val> </pair>
+          <pair> <key>GSS</key> <val>GSS [or ETS] (perfect=1)</val> </pair>
+          <pair> <key>CSI</key> <val>CSI [or Threat Score] (perfect=1)</val> </pair>
+          <pair> <key>BASER</key> <val>Base Rate (fraction of obs events)</val> </pair>
+        </val_map>
+
+        <val_map name="thresh_name">
+          <pair> <key>>0.000</key>  <val>gt0p0</val> </pair>
+          <pair> <key>>=0.400</key> <val>gt0p4</val> </pair>
+          <pair> <key>>=1.600</key> <val>gt1p6</val> </pair>
+          <pair> <key>>=6.400</key> <val>gt6p4</val> </pair>
+        </val_map>
+
+        <data_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_thresh?map=thresh_name}_{dep1_1_stat1}_d02_Full_{init_hour?format=HH}Z.data</data_file>
+        <plot_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_thresh?map=thresh_name}_{dep1_1_stat1}_d02_Full_{init_hour?format=HH}Z.png</plot_file>
+        <r_file>{fcst_init_beg?map=agg_to_season}/{fcst_init_beg?map=agg_to_date}/{fcst_init_beg?map=agg_to_string}_{dep1_1}_{fcst_thresh?map=thresh_name}_{dep1_1_stat1}_d02_Full_{init_hour?format=HH}Z.R</r_file>
+
+        <title>{vx_mask} {dep1_1?map=fcst_var} {fcst_thresh} mm for {fcst_init_beg?map=agg_to_string}  Init-{init_hour?format=HH}Z</title>
+        <x_label>Forecast Lead Time (hours)</x_label>
+        <y1_label>{dep1_1_stat1?map=stat}</y1_label>
+        <y2_label>{dep2_1_stat1?map=stat}</y2_label>
+        <caption>Generated on {cur_yyyymmddhh}</caption>
+      </tmpl>
+
+      <event_equal>true</event_equal>
+      <event_equal_m>false</event_equal_m>
+      <vert_plot>false</vert_plot>
+      <x_reverse>false</x_reverse>
+      <num_stats>false</num_stats>
+      <indy1_stag>true</indy1_stag>
+      <indy2_stag>false</indy2_stag>
+      <grid_on>true</grid_on>
+      <sync_axes>false</sync_axes>
+      <dump_points1>false</dump_points1>
+      <dump_points2>false</dump_points2>
+      <log_y1>false</log_y1>
+      <log_y2>false</log_y2>
+      <varianceInflationFactor>true</varianceInflationFactor>
+      <plot_type>png16m</plot_type>
+      <plot_height>8.5</plot_height>
+      <plot_width>11</plot_width>
+      <plot_res>72</plot_res>
+      <plot_units>in</plot_units>
+      <mar>c(8, 4, 5, 4)</mar>
+      <mgp>c(1, 1, 0)</mgp>
+      <cex>1</cex>
+      <title_weight>2</title_weight>
+      <title_size>1.6</title_size>
+      <title_offset>-2</title_offset>
+      <title_align>.5</title_align>
+      <xtlab_orient>1</xtlab_orient>
+      <xtlab_perp>-.75</xtlab_perp>
+      <xtlab_horiz>.5</xtlab_horiz>
+      <xtlab_freq>0</xtlab_freq>
+      <xtlab_size>1.5</xtlab_size>
+      <xlab_weight>2</xlab_weight>
+      <xlab_size>1.5</xlab_size>
+      <xlab_offset>2</xlab_offset>
+      <xlab_align>.5</xlab_align>
+      <ytlab_orient>1</ytlab_orient>
+      <ytlab_perp>.5</ytlab_perp>
+      <ytlab_horiz>.5</ytlab_horiz>
+      <ytlab_size>1.5</ytlab_size>
+      <ylab_weight>2</ylab_weight>
+      <ylab_size>1.5</ylab_size>
+      <ylab_offset>-2</ylab_offset>
+      <ylab_align>.5</ylab_align>
+      <grid_lty>3</grid_lty>
+      <grid_col>#454545</grid_col>
+      <grid_lwd>1.5</grid_lwd>
+      <grid_x>listX</grid_x>
+      <x2tlab_orient>1</x2tlab_orient>
+      <x2tlab_perp>1</x2tlab_perp>
+      <x2tlab_horiz>.5</x2tlab_horiz>
+      <x2tlab_size>1.4</x2tlab_size>
+      <x2lab_weight>1</x2lab_weight>
+      <x2lab_size>1.3</x2lab_size>
+      <x2lab_offset>-.5</x2lab_offset>
+      <x2lab_align>.5</x2lab_align>
+      <y2tlab_orient>1</y2tlab_orient>
+      <y2tlab_perp>.5</y2tlab_perp>
+      <y2tlab_horiz>.5</y2tlab_horiz>
+      <y2tlab_size>1</y2tlab_size>
+      <y2lab_weight>1</y2lab_weight>
+      <y2lab_size>1</y2lab_size>
+      <y2lab_offset>1</y2lab_offset>
+      <y2lab_align>.5</y2lab_align>
+      <legend_size>.8</legend_size>
+      <legend_box>o</legend_box>
+      <legend_inset>c(0, -.25)</legend_inset>
+      <legend_ncol>3</legend_ncol>
+      <caption_weight>1</caption_weight>
+      <caption_col>#333333FF</caption_col>
+      <caption_size>.8</caption_size>
+      <caption_offset>3</caption_offset>
+      <caption_align>0</caption_align>
+      <box_pts>FALSE</box_pts>
+      <box_outline>TRUE</box_outline>
+      <box_boxwex>.2</box_boxwex>
+      <box_notch>FALSE</box_notch>
+      <box_avg>FALSE</box_avg>
+      <rely_event_hist>TRUE</rely_event_hist>
+      <ci_alpha>.05</ci_alpha>
+      <ensss_pts>-1</ensss_pts>
+      <ensss_pts_disp>TRUE</ensss_pts_disp>
+      <plot_ci>c("boot", "boot","none","none")</plot_ci>
+      <plot_disp>c(TRUE, TRUE, TRUE, FALSE)</plot_disp>
+      <colors>c("green4", "red", "cornsilk3", "darkgray")</colors>
+      <pch>c(20, 20, 20, 20)</pch>
+      <type>c("b", "b", "h","h")</type>
+      <lty>c(1, 1, 1, 1)</lty>
+      <lwd>c(2, 2, 100, 100)</lwd>
+      <con_series>c(0, 0, 0, 0)</con_series>
+      <legend>c("PME - DA", "PME - noDA", "Base Rate", "")</legend>
+      <y1_lim/>
+      <y1_bufr>.04</y1_bufr>
+      <y2_lim>c(0,1)</y2_lim>
+      <y2_bufr>0</y2_bufr>
+    </plot>
+
+    <!-- Begin plots for 3hr APCP -->
+
+    <plot name="pme_lead_a03_pody" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_03"><stat>PODY</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_03"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <y1_lim>c(0,1)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+    </plot>
+
+    <plot name="pme_lead_a03_far" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_03"><stat>FAR</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_03"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=1, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(0,1)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <plot name="pme_lead_a03_gss" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_03"><stat>GSS</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_03"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-0.01,0.4)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <plot name="pme_lead_a03_csi" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_03"><stat>CSI</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_03"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(0,0.4)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <!-- End plots for 3hr APCP -->
+
+    <!-- Begin plots for 6hr APCP -->
+
+    <plot name="pme_lead_a06_pody" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_06"><stat>PODY</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_06"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(0,1)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <plot name="pme_lead_a06_far" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_06"><stat>FAR</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_06"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=1, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(0,1)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <plot name="pme_lead_a06_gss" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_06"><stat>GSS</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_06"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(-0.01,0.4)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <plot name="pme_lead_a06_csi" inherits="pme_lead">
+      <dep>
+        <dep1><fcst_var name="APCP_06"><stat>CSI</stat></fcst_var></dep1>
+        <dep2><fcst_var name="APCP_06"><stat>BASER</stat></fcst_var></dep2>
+      </dep>
+      <plot_cmd>par(usr=listY1Usr); abline(h=0, lty=1, col="#454545FF",lwd=2);</plot_cmd>
+      <y1_lim>c(0,0.4)</y1_lim>
+      <y2_lim>c(0,0.7)</y2_lim>
+    </plot>
+
+    <!-- End plots for 6hr APCP -->
+
+</plot_spec>
+

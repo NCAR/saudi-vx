@@ -1,0 +1,15 @@
+City, Latitude, Longitude
+% Radars operational
+Dawadmi, 24.439593, 44.129573
+AlBaha, 20.295040, 41.642742
+Abha, 18.228599, 42.660783
+AlJouf, 29.789080, 40.097991
+Taif, 21.479867, 40.560677
+Gizan, 16.896328, 42.583494
+Tabuk, 28.377384, 36.605850
+Jeddah, 21.710828, 39.185278
+
+%Radar offline (don't inlude for now)
+Riyadh, 24.925539, 46.721683
+Qassim, 26.310697, 43.764731
+Hail, 27.435083, 41.690306

@@ -1,0 +1,32 @@
+<load_spec>
+	<connection>
+		<host>localhost:3306</host>
+		<database>mv_saudi_gwpme</database>
+		<user>mvuser</user>
+		<password>ahquunoghahch8layeiThaig</password>
+	</connection>
+	
+  <folder_tmpl>/d2/pmemet/met_out/{model}/{valid_ymd}/{valid}/{output_type}/</folder_tmpl>
+
+	<met_version>V4.0</met_version>
+
+	<verbose>false</verbose>
+	<insert_size>1</insert_size>
+	<mode_header_db_check>true</mode_header_db_check>
+	<stat_header_db_check>true</stat_header_db_check>
+	<drop_indexes>false</drop_indexes>
+	<apply_indexes>false</apply_indexes>
+
+	<load_stat>true</load_stat>
+	<load_mode>true</load_mode>
+	<load_mpr>false</load_mpr>
+	<load_orank>false</load_orank>
+
+	<load_val>
+		<field name="output_type">
+			<val>grid_stat</val>
+			<val>point_stat</val>
+			<val>mode</val>
+		</field>
+	</load_val>
+</load_spec>

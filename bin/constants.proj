@@ -1,0 +1,209 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# constants.proj
+#
+# This file stores constant values and is parsed by the function
+# VxUtil::vx_init_const().  The syntax is:
+# 
+#   CONST_NAME = const_val
+#
+# or, for a list of items:
+#
+#   CONST_NAME = [ const_val1 const_val2 'const with spaces' ]
+#
+# Constant names must be alpha-numeric, with underscores allowed.
+# Spaces are allowed before or after the constant name, equal sign or 
+# among the items of the list.  If a constant value contains a space,
+# put single quotes around it to indicate that it should be handled as
+# a single item.  Note that lists can span more than one line, and 
+# should be closed with a ].  The list must start on the same line as
+# the constant name:
+#
+#   CONST_MULTI_LINE_LIST = [ item1 'item with space' item3
+#                             middle 'bracket item\[ \]'
+#                             next_line_item 'item with \'postrophe' ]
+#
+# The characters [, ], #, and ' must be escaped with a preceeding \ if 
+# they appear within constant values.
+#
+# A constant may be embedded in any constant that appears after, using
+# the syntax ${CONST_NAME}.  For example:
+#
+#   MYSQL_BIN = /usr/bin/mysql
+#   MYSQL_CMD = '${MYSQL_BIN} -u user -p pass'
+#
+# Inline comments are allowed.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Project directories
+PROJ_DIR                      = /d1/pmemet
+BIN_DIR                       = ${PROJ_DIR}/projects/saudi/rtf3h/pmemet/user/bin
+DATA_DIR                      = /d2/pmemet
+
+MET_DIR                       = ${PROJ_DIR}/MET/MET_releases/METv4.1
+CONFIG_DIR                    = ${PROJ_DIR}/projects/saudi/rtf3h/pmemet/user/config
+XML_DIR                       = ${PROJ_DIR}/projects/saudi/rtf3h/pmemet/user/xml
+
+OUT_DIR                       = ${DATA_DIR}/met_out
+LOG_DIR                       = ${DATA_DIR}/log
+TMP_DIR                       = /tmp
+
+PME_DA_DATA_DIR               = /d2/pmefdda/cycles/GWPME/GRM
+PME_DA_FCST_DIR               = ${PME_DA_DATA_DIR}/output/grib
+
+PME_NODA_DATA_DIR             = ${DATA_DIR}/fcst/pme_noda_native
+PME_NODA_FCST_DIR             = ${DATA_DIR}/fcst/pme_noda
+
+PME_WRF22_DATA_DIR            = ${DATA_DIR}/fcst/pme_wrf22_native
+PME_WRF22_FCST_DIR            = ${DATA_DIR}/fcst/pme_wrf22
+
+GFS_DATA_DIR                  = /d1/pmeop/datainput/gfs4
+GFS_FCST_DIR                  = ${DATA_DIR}/fcst/gfs4
+
+POINT_DATA_DIR                = ${PME_DA_DATA_DIR}
+POINT_OBS_DIR                 = ${DATA_DIR}/obs/point
+
+RADAR_DATA_DIR                = ${DATA_DIR}/obs/radar/accum_1hr/mdv/accum_1hr
+RADAR_OBS_DIR                 = ${DATA_DIR}/obs/radar/accum_1hr/grib
+
+# File name templates
+GRIB_TMPL                     = ${PME_DA_DATA_DIR}/output/grib/{init?fmt=%Y%m%d%H}/wrf_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+WRFNC_TMPL                    = ${PME_DA_DATA_DIR}/output/netcdf/{init?fmt=%Y%m%d%H}/wrfout_{domain}_{valid?fmt=%Y-%m-%d_%H}:00:00
+PME_DA_FCST_TMPL              = ${PME_DA_FCST_DIR}/{init?fmt=%Y%m%d%H}/wrf_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+GFS_FCST_TMPL                 = ${GFS_FCST_DIR}/{init?fmt=%Y%m%d%H}/gfs4_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+PME_NODA_C2D02_FCST_TMPL      = ${PME_NODA_FCST_DIR}/{init?fmt=%Y%m%d%H}/pme_noda_c2d02_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+PME_NODA_C2D03_FCST_TMPL      = ${PME_NODA_FCST_DIR}/{init?fmt=%Y%m%d%H}/pme_noda_c2d03_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+PME_WRF22_C2D01_FCST_TMPL     = ${PME_WRF22_FCST_DIR}/{init?fmt=%Y%m%d%H}/pme_wrf22_c2d01_{domain}_{valid?fmt=%Y%m%d%H}00.grb
+
+PME_DA_FCST_NC_TMPL           = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/pcp_combine/wrf_{domain}_{valid?fmt=%Y%m%d%H}00_APCP_{accum}h_F{lead?fmt=%HHH}.nc
+GFS_FCST_NC_TMPL              = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/pcp_combine/gfs4_{domain}_{valid?fmt=%Y%m%d%H}00_APCP_{accum}h_F{lead?fmt=%HHH}.nc
+PME_NODA_C2D02_FCST_NC_TMPL   = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/pcp_combine/{model}_{domain}_{valid?fmt=%Y%m%d%H}00_APCP_{accum}h_F{lead?fmt=%HHH}.nc
+PME_NODA_C2D03_FCST_NC_TMPL   = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/pcp_combine/{model}_{domain}_{valid?fmt=%Y%m%d%H}00_APCP_{accum}h_F{lead?fmt=%HHH}.nc
+PME_WRF22_C2D01_FCST_NC_TMPL  = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/pcp_combine/{model}_{domain}_{valid?fmt=%Y%m%d%H}00_APCP_{accum}h_F{lead?fmt=%HHH}.nc
+
+POINT_RAW_TMPL                = ${POINT_DATA_DIR}/{init?fmt=%Y%m%d%H}/RAP_RTFDDA/qc_out_{valid?fmt=%Y-%m-%d_%H}:00:00.GRM_P+FCST
+POINT_OBS_TMPL                = ${POINT_OBS_DIR}/{valid?fmt=%Y%m%d}/qc_out_{valid?fmt=%Y-%m-%d_%H}:00:00.GRM_P+FCST.nc
+
+RADAR_RAW_TMPL                = ${RADAR_DATA_DIR}/{valid?fmt=%Y%m%d}/{valid?fmt=%H}0000.mdv
+RADAR_OBS_DIR_TMPL            = ${RADAR_OBS_DIR}/{domain}/{valid?fmt=%Y%m%d}
+RADAR_OBS_GRB_TMPL            = ${RADAR_OBS_DIR_TMPL}/radar_APCP_{accum}h_{valid?fmt=%Y%m%d_%H}0000.grb
+RADAR_OBS_NC_TMPL             = ${RADAR_OBS_DIR_TMPL}/radar_APCP_{accum}h_{valid?fmt=%Y%m%d_%H}0000.nc
+
+MODE_NC_TMPL                  = ${OUT_DIR}/{model}_{domain}/{valid?fmt=%Y%m%d}/{valid?fmt=%Y%m%d%H}/mode/mode_{model}_{domain}_{accum}h_{obj_thresh}_{lead?fmt=%HH}0000L_{valid?fmt=%Y%m%d_%H%M%S}V_{accum}0000A_obj.nc
+
+METV_LOAD_TMPL                = ${XML_DIR}/load/metv_load_valid_tmpl.xml
+METV_LOAD_TMPL_V4_0           = ${XML_DIR}/load/metv_load_valid_tmpl_v4.0.xml
+METV_LOAD_TMPL_V4_1           = ${XML_DIR}/load/metv_load_valid_tmpl_v4.1.xml
+METV_LOAD_XML_TMPL            = ${LOG_DIR}/metv_load_valid/{valid?fmt=%Y%m%d}/metv_load_valid_{valid?fmt=%Y%m%d%H}_{model}.xml
+METV_LOAD_EXEC                = /d1/pmemet/metviewer/bin/mv_load.sh
+
+METV_PLOT_CNT_TMPL            = ${XML_DIR}/plot/metv_plot_cnt_tmpl.xml
+METV_PLOT_CNT_XML_TMPL        = ${LOG_DIR}/metv_plot_init/{init?fmt=%Y%m%d}/metv_plot_cnt_{init?fmt=%Y%m%d%H}.xml
+METV_PLOT_CTS_TMPL            = ${XML_DIR}/plot/metv_plot_cts_tmpl.xml
+METV_PLOT_CTS_XML_TMPL        = ${LOG_DIR}/metv_plot_init/{init?fmt=%Y%m%d}/metv_plot_cts_{init?fmt=%Y%m%d%H}.xml
+METV_PLOT_SID_TMPL            = ${XML_DIR}/plot/metv_plot_sid_tmpl.xml
+METV_PLOT_SID_XML_TMPL        = ${LOG_DIR}/metv_plot_init/{init?fmt=%Y%m%d}/metv_plot_sid_{init?fmt=%Y%m%d%H}.xml
+METV_PLOT_EXEC                = /d1/pmemet/metviewer/bin/mv_batch.sh
+
+METV_SCRUB_EXEC               = /d1/pmemet/metviewer/bin/scrubbing.sh
+METV_SCRUB_SQL                = /d1/pmemet/metviewer/sql/scrubbing.sql
+
+METV_DIR                      = ${DATA_DIR}/metv
+METV_DATA_DIR                 = ${METV_DIR}/R_work/data
+
+# executables
+WGRIB_EXEC                    = /usr/local/bin/wgrib
+CNVGRIB_EXEC                  = /usr/local/bin/cnvgrib
+COPYGB_EXEC                   = /d1/deirdre/CVS_reference.wrfv3.3.1/cvs/apps/4dwx/RTFDDA/src/RT_WPP/UPP_V3.3/src/copygb/copygb.exe
+MDV2GRIB_EXEC                 = ${PROJ_DIR}/bin/Mdv2Grib
+SCRUB_EXEC                    = /opt/bin/scrub
+MET_EXEC                      = ${MET_DIR}/bin
+
+GRIB_REC                      = 521
+COPYGB_BUDGET_VARS            = ACPCP|NCPCP|APCP|PWAT
+COPYGB_EXCLUDE_VARS           = ACPCP|NCPCP|APCP|PWAT|VWSH|PEVAP
+
+DOMAINS                       = [ d02 d03 ]
+
+# D02 grid specification:
+#   Mercator: lat  8.950000 to 32.953000 by 7.200000 km  nxny 136764
+#             long 28.740000 to 58.054000 by 7.200000 km, (393 x 348) scan 64 mode 136 Latin 30.000000 bdsgrid 1
+D02_GRIDSPEC                  = '255 1 393 348 8950 28740 136 32953 58054 30000 0 64 7200 7200'
+D02_GRIDRES                   = 7.2
+
+# D03 grid specification:
+#   Mercator: lat  15.572000 to 25.275000 by 2.400000 km  nxny 178893
+#             long 36.717000 to 47.386000 by 2.400000 km, (429 x 417) scan 64 mode 136 Latin 30.000000 bdsgrid 1
+D03_GRIDSPEC                  = '255 1 429 417 15572 36717 136 25275 47386 30000 0 64 2400 2400'
+D03_GRIDRES                   = 2.4
+
+# PME_DA model timing information (saudi-c3)
+PME_DA_D02_LEAD_SEQ           = [ 0 1 72 ]
+PME_DA_D03_LEAD_SEQ           = [ 0 1 48 ]
+PME_DA_INIT_FREQ              = 21600 # seconds
+PME_DA_VX_ACCUM               = [ 01 03 06 ]
+
+# PME_NODA_C2D02 model timing information (saudi-c2)
+PME_NODA_C2D02_D02_LEAD_SEQ   = [ 0 1 48 ]
+PME_NODA_C2D02_INIT_FREQ      = 21600 # seconds
+PME_NODA_C2D02_VX_ACCUM       = [ 01 03 06 ]
+
+# PME_NODA_C2D03 model timing information (saudi-c2)
+PME_NODA_C2D03_D02_LEAD_SEQ   = [ 0 1 48 ]
+PME_NODA_C2D03_INIT_FREQ      = 21600 # seconds
+PME_NODA_C2D03_VX_ACCUM       = [ 01 03 06 ]
+
+# PME_WRF22_C2D01 model timing information (saudi-c2)
+PME_WRF22_C2D01_D02_LEAD_SEQ   = [ 0 1 36 ]
+PME_WRF22_C2D01_INIT_FREQ      = 43200 # seconds
+PME_WRF22_C2D01_VX_ACCUM       = [ 01 03 06 ]
+
+# GFS model timing information
+GFS_D02_LEAD_SEQ              = [ 0 3 84 ]
+GFS_D03_LEAD_SEQ              = [ 0 3 84 ]
+GFS_INIT_FREQ                 = 21600 # seconds
+GFS_VX_ACCUM                  = [ 03 06 ]
+
+# Point-Stat masking regions
+PS_D02_VX_MASK                = '"${CONFIG_DIR}/mask/d02_Full_mask.nc"'
+PS_D03_VX_MASK                = '"${CONFIG_DIR}/mask/d03_Full_mask.nc"'
+
+# Grid-Stat masking regions
+GS_D02_VX_MASK                = '"${CONFIG_DIR}/mask/d02_Full_mask.nc", "${CONFIG_DIR}/mask/d02_Saudi_mask.nc", "${CONFIG_DIR}/mask/d02_Radar_mask.nc", "${CONFIG_DIR}/mask/d02_Sub_d03_mask.nc"'
+GS_D03_VX_MASK                = '"${CONFIG_DIR}/mask/d03_Full_mask.nc", "${CONFIG_DIR}/mask/d03_Saudi_mask.nc", "${CONFIG_DIR}/mask/d03_Radar_mask.nc"'
+GS_D02_PROV_VX_MASK           = '"${CONFIG_DIR}/mask/d02_Asir_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Bahah_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Hail_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Hudud_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Jawf_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Jizan_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Madinah_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Makkah_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Najran_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Qasim_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Qurayyat_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Riyad_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Sharqiyah_prov_mask.nc", "${CONFIG_DIR}/mask/d02_Tabuk_prov_mask.nc"'
+GS_D03_PROV_VX_MASK           =
+
+# MODE LOTHRESH configuration
+APCP_01_LOTHRESH_CONV_THRESH  = >=0.10
+APCP_01_LOTHRESH_MERGE_THRESH = >=0.08
+APCP_03_LOTHRESH_CONV_THRESH  = >=0.10
+APCP_03_LOTHRESH_MERGE_THRESH = >=0.08
+APCP_06_LOTHRESH_CONV_THRESH  = >=0.10
+APCP_06_LOTHRESH_MERGE_THRESH = >=0.08
+
+# MODE HITHRESH configuration
+APCP_01_HITHRESH_CONV_THRESH  = >=1.60
+APCP_01_HITHRESH_MERGE_THRESH = >=1.28
+APCP_03_HITHRESH_CONV_THRESH  = >=1.60
+APCP_03_HITHRESH_MERGE_THRESH = >=1.28
+APCP_06_HITHRESH_CONV_THRESH  = >=1.60
+APCP_06_HITHRESH_MERGE_THRESH = >=1.28
+
+# Additional entries for the verification monitoring script
+ROCOTOSTAT_EXEC               = ${PROJ_DIR}/rocoto/rocoto-1.0.6/bin/rocotostat
+VX_WORKFLOW_XML               = ${XML_DIR}/workflow/PME_RTFDDA_Vx_2012_rt.xml
+VX_WORKFLOW_STORE             = ${LOG_DIR}/workflow/PME_RTFDDA_Vx/PME_RTFDDA_Vx_2012_rt.store
+VX_WORKFLOW_LOG_TMPL          = ${LOG_DIR}/workflow/PME_RTFDDA_Vx/workflow_{cycle}.log
+
+# Email list for monitoring script
+LOG_MON_RECIP                 = 'johnhg@ucar.edu,jensen@ucar.edu'
+
+# Scrub data older than this many days
+SCRUB_FCST_DAYS               = 21
+SCRUB_OBS_DAYS                = 365
+SCRUB_LOG_DAYS                = 21
+SCRUB_MET_OUT_DAYS            = 365
+SCRUB_METV_DB_DAYS            = 365
+SCRUB_PLOT_DAYS               = 1825
+

@@ -1,0 +1,476 @@
+/**********************************************************************
+ * TDRP params for /d1/johnhg/cvs/apps/mdv_utils/src/Mdv2Grib/Mdv2Grib
+ **********************************************************************/
+
+//======================================================================
+//
+// DEBUGGING PARAMETERS.
+//
+// Parameters controlling debug outputs.
+//
+//======================================================================
+ 
+///////////// debug ///////////////////////////////////
+//
+// debug flag.
+// Debug flag.
+// Type: boolean
+//
+
+debug = FALSE;
+
+//======================================================================
+//
+// PROCESS PARAMETERS.
+//
+//======================================================================
+ 
+///////////// instance ////////////////////////////////
+//
+// Process instance.
+// Used for registration with procmap.
+// Type: string
+//
+
+instance = "Test";
+
+//======================================================================
+//
+// PROCESS I/O PARAMETERS.
+//
+// Parameters describing the input and output locations.
+//
+//======================================================================
+ 
+///////////// trigger_mode ////////////////////////////
+//
+// Input triggering mode.
+// In LATEST_DATA mode, the program waits for new data from the MDV 
+//   location specified by the latest_data_trigger parameter.
+// In TIME_LIST mode, the program operates on archive data as specified 
+//   in the time_list_trigger parameter.
+// In FILE_LIST mode, the files listed on the command line using the -f 
+//   command line option are processed and then Mdv2Grib exits. FILE_LIST 
+//   mode is automatically invoked by -f option on the command line and if 
+//   the FILE_LIST mode is specified, the -f option is required on the 
+//   command line.
+// In DS_INPUT_PATH and LOCAL_FILEPATH_REALTIME modes (these are 
+//   equivalent) the program watches for new files in a DS directory and 
+//   triggers when a new file appears. The DS directories are the ones 
+//   named like <dir>/yyyymmdd/hhmmss.<ext>. This is needed in addition to 
+//   the LATEST_DATA trigger to handle cases where the  data is coming in 
+//   too fast to be seen in the DataMapper.
+// In SPECIFIC_GEN_TIME_LDATA mode, the application will trigger 
+//   whenever the latest data info file indicates a new file from the 
+//   specified generation time is received. The specific_gen_time_ldata 
+//   parameter specifies the desired generation time.
+//
+// Type: enum
+// Options:
+//     LATEST_DATA
+//     LATEST_DATA_FCST
+//     TIME_LIST
+//     FILE_LIST
+//     DS_INPUT_PATH
+//     LOCAL_FILEPATH_REALTIME
+//     SPECIFIC_GEN_TIME_LDATA
+//
+
+trigger_mode = FILE_LIST;
+
+///////////// latest_data_trigger /////////////////////
+//
+// URL to use when using a LATEST_DATA trigger.
+// Type: string
+//
+
+latest_data_trigger = "mdvp:://localhost::./mdv/ruc";
+
+///////////// time_list_trigger ///////////////////////
+//
+// Trigger information used when using the TIME_LIST trigger.
+// url specifies the URL to use to get the available data times.
+// start_time specifies the archive start time in any format recognized 
+//   by the DateTime class.
+// end_time specifies the archive end time in any format recognized by 
+//   the DateTime class.
+//
+// Type: struct
+//   typedef struct {
+//      string start_time;
+//      string end_time;
+//   }
+//
+//
+
+time_list_trigger = { "2001/1/1 00:00:00", "2002/1/2 00:00:00" };
+
+///////////// specific_gen_time_ldata_trigger /////////
+//
+// The desired generation time when using the SPECIFIC_GEN_TIME_LDATA 
+//   triggering mode.
+// This is the number of seconds after 0:00 for the desired generation 
+//   time.
+// Type: int
+//
+
+specific_gen_time_ldata_trigger = 0;
+
+///////////// input_url ///////////////////////////////
+//
+// Input URL.
+// URL for the input MDV files.
+// Type: string
+//
+
+input_url = "mdvp:://localhost::mdv/input";
+
+///////////// output_dir //////////////////////////////
+//
+// Output directory.
+// Type: string
+//
+
+output_dir = "/d2/pmemet/obs/radar/accum_1hr/grib/native";
+
+///////////// use_ral_subdirs /////////////////////////
+//
+// Flag indicating whether to put output files into a RAL-style 
+//   subdirectory structure.
+// If true and is_forecast_data is set to false, the files will appear 
+//   in <output_dir>/<YYYYMMDD> where <YYYYMMDD> is the date of the valid 
+//   time of the data.
+// If true and is_forecast_data is set to true, the files will appear in 
+//   <output_dir>/<YYYYMMDD>/g_<HHMMSS> where <YYYYMMDD> and <HHMMSS> are 
+//   the forecast generation date and time.
+// Type: boolean
+//
+
+use_ral_subdirs = TRUE;
+
+///////////// output_file_prefix //////////////////////
+//
+// Output file prefix.
+// Type: string
+//
+
+output_file_prefix = "radar_APCP_01h_";
+
+///////////// use_iso8601_filename_convention /////////
+//
+// If true the output filename uses the basename, followed by ISO 8601 
+//   timestamp convention.
+// eg. prefix.2008-05-22T14:00:00.nc.
+// Type: boolean
+//
+
+use_iso8601_filename_convention = FALSE;
+
+///////////// is_forecast_data ////////////////////////
+//
+// If use_iso8601_filename_convention is true and is_forecast_data is 
+//   true, ISO 8601 timestamp will contain forecast period in terms of 
+//   hours and minutes.
+// eg. prefix.2008-05-22T14:00:00.PT01:00.nc.
+// Type: boolean
+//
+
+is_forecast_data = FALSE;
+
+///////////// write_ldata_info ////////////////////////
+//
+// Flag indicating whether to write an ldata info file in the output 
+//   directory.
+// Type: boolean
+//
+
+write_ldata_info = FALSE;
+
+//======================================================================
+//
+// ALGORITHM PARAMETERS.
+//
+//======================================================================
+ 
+///////////// remap_output ////////////////////////////
+//
+// Flag indicating whether to remap the output fields.
+// If TRUE, the output fields will be remapped according to the 
+//   information in the remap_info parameter.
+// Type: boolean
+//
+
+remap_output = FALSE;
+
+///////////// remap_info //////////////////////////////
+//
+// Information on how to remap the output fields. Used only if 
+//   remap_output is set to TRUE.
+// 	proj_type - specifies the output projection to use. Can be either 
+//   PROJ_LATLON or PROJ_LAMBERT_CONF. Currently, only PROJ_LAMBERT_CONF 
+//   is supported.
+// 	nx, ny - specify the output grid dimensions.
+// 	minx, miny - specify the output grid location.
+// 	dx, dy - specify the output grid resolution.
+// 	origin_lat, origin_lon - specify the output grid origin. Used only 
+//   if proj_type is set to PROJ_LAMBERT_CONF.
+// lat1, lat2 - specify the output grid parameters. Used only if 
+//   proj_type is set to PROJ_LAMBERT_CONF.
+//
+// Type: struct
+//   typedef struct {
+//      proj_type_t proj_type;
+//        Options:
+//          PROJ_LATLON
+//          PROJ_LAMBERT_CONF
+//      long nx;
+//      long ny;
+//      double minx;
+//      double miny;
+//      double dx;
+//      double dy;
+//      double origin_lat;
+//      double origin_lon;
+//      double lat1;
+//      double lat2;
+//   }
+//
+//
+
+remap_info = { PROJ_LAMBERT_CONF, 301, 225, -3332.14, -588.89, 20.318, 20.318, 25, -95, 25, 25 };
+
+///////////// offset_latitude /////////////////////////
+//
+// Offset latitude degrees.
+// Used only when remap_output=TRUE and projection is PROJ_LAMBERT_CONF. 
+//   Set to 0.0 for no offset latitude adjustment. Not used when 
+//   use_horiz_limits = TRUE.
+// Type: double
+//
+
+offset_latitude = 0;
+
+///////////// offset_longitude ////////////////////////
+//
+// Offset longitude degrees.
+// Used only when remap_output=TRUE and projection is PROJ_LAMBERT_CONF. 
+//   Set to 0.0 for no offset longitude adjustment. Not used when 
+//   use_horiz_limits=TRUE.
+// Type: double
+//
+
+offset_longitude = 0;
+
+///////////// use_horiz_limits ////////////////////////
+//
+// Flag indicating whether to apply horizontal limits instead of 
+//   remapping the output fields using the remap_info.
+// If TRUE and Lambert Conformal projection, the output fields will be 
+//   limited by the horizontal boundary (minLat/maxLat/minLon/maxLon).
+// Type: boolean
+//
+
+use_horiz_limits = FALSE;
+
+///////////// horiz_limits ////////////////////////////
+//
+// Bounding box which defines the horizontal limits of the target 
+//   data.Used only if use_horiz_limits is set to TRUE.
+// 	min_lat - specifies the minimum latitude.
+// 	max_lat - specifies the maximum latitude.
+// 	min_lon - specifies the minimum longitude.
+// 	max_lon - specifies the maximum longitude.
+//
+// Type: struct
+//   typedef struct {
+//      double min_lat;
+//      double max_lat;
+//      double min_lon;
+//      double max_lon;
+//   }
+//
+//
+
+horiz_limits = { -90, 90, -180, 180 };
+
+///////////// grib_tables_version /////////////////////
+//
+// GRIB tables version number.
+// Type: long
+//
+
+grib_tables_version = 2;
+
+///////////// originating_center //////////////////////
+//
+// GRIB originating center.
+// See WMO code table 0. Here are a couple of useful center IDs:
+// 	0 = WMO Secretariat
+// 	7 = NCEP
+// 	8 = NWS Telecommunications Gateway
+// 	9 = NWS other
+// 	59 = NOAA FSL
+// 	60 = NCAR.
+// Type: long
+//
+
+originating_center = 60;
+
+///////////// subcenter_id ////////////////////////////
+//
+// GRIB subcenter id.
+// See WMO code table 0, Part 2. Here are a couple of useful subcenter 
+//   IDs:
+// 	7 = US Weather Service - National Met. Center
+// 	8 = US Weather Service - NWS Telecomms Gateway
+// 	9 = US Weather Service - Field Stations
+// 	57 = US Air Force - Global Weather Center
+// 	58 = US Navy - Fleet Numerical Oceanography Center
+// 	59 = NOAA Forecast Systems Lab.
+// Type: long
+//
+
+subcenter_id = 0;
+
+///////////// generating_process_id ///////////////////
+//
+// Generating process identification number.
+// This is a number allocated by the originating center. I'm not sure 
+//   how this is used operationally.
+// Type: long
+//
+
+generating_process_id = 0;
+
+///////////// grid_id /////////////////////////////////
+//
+// Grid identification number.
+// This is a number identifies a predefined grid. See the GRIB 
+//   documentation for help setting value.
+// Type: long
+//
+
+grid_id = 0;
+
+///////////// time_range_id ///////////////////////////
+//
+// time range indicator.
+// This number sets the time range indicator, PDS octet 21. See the GRIB 
+//   documentation for help setting value.
+// This value is automatically set to 4 for fields where the is_accum 
+//   flag is set to true.
+// Type: long
+//
+
+time_range_id = 0;
+
+///////////// use_mdv_field_name //////////////////////
+//
+// Flag indicating whether to use the mdv_field_name or the 
+//   mdv_field_num to identify the output fields.
+// Type: boolean
+//
+
+use_mdv_field_name = TRUE;
+
+///////////// forecast_interval_type //////////////////
+//
+// Forecast interval type.
+//
+// Type: enum
+// Options:
+//     FORECAST_INTERVAL_SECONDS
+//     FORECAST_INTERVAL_MINUTES
+//     FORECAST_INTERVAL_HOURS
+//
+
+forecast_interval_type = FORECAST_INTERVAL_HOURS;
+
+///////////// output_fields ///////////////////////////
+//
+// List of fields to write to the GRIB file.
+// 	mdv_field_name - Field name of the field in the MDV file. Used only 
+//   if use_mdv_field_name is set to TRUE.
+// 	mdv_field_num - Field number (the first field is 0) of the field in 
+//   the MDV file.Used only if use_mdv_field_name is set to FALSE.
+// 	grib_code - GRIB code to use for the field in the output file.
+// 	precision - Number of decimal places to store in the GRIB file.
+// 	max_bit_length - Maximum number of bits used to store data in the
+// GRIB file. If a smaller number of bits can represent the data, it
+// will be used. If value is -1, the width is dynamiclly 
+//   determined.	data_convert_type - Flag indicating what type of units 
+//   conversion to perform on the MDV data before writing it to the GRIB 
+//   file.
+// 	data_convert_parameter - Parameter used in data conversion:
+// 		DATA_CONVERT_NONE - parameter not used.
+// 		DATA_CONVERT_MULTIPLY - the MDV values are multiplied by this value 
+//   before being written to the GRIB file.
+// 	override_vert_level - flag indicating whether to override the 
+//   vertical level information (octets 10-12 of the PDS) in the output 
+//   file.
+// 	vert_level_type - the value to use for octet 10 (the vertical level 
+//   type) of the PDS. Used only if override_vert_level is set to true.
+// 	vert_level_bottom - the vertical level bottom value for the output 
+//   PDS. How this value is used depends on how the vert_level_type value 
+//   is set -- see GRIB documentation. Used only if override_vert_level is 
+//   set to true.
+// 	vert_level_top - the vertical level top value for the output PDS. 
+//   How this value is used depends on how the vert_level_type value is 
+//   set -- see GRIB documentation. Used only if override_vert_level is 
+//   set to true.
+// 	data_addend - This value will be added to the data values; the 
+//   default addend is 0.
+// 	field_type - Value indicating type of field. If this is a 
+//   FIELD_TYPE_ACCUM or FIELD_TYPE_AVG field, the GRIB file forecast 
+//   period 1 field contains the offset of the field start time from the 
+//   timestamp of the file and the forecast period 2 field contains the 
+//   offset of the end time.
+// 	accum_secs - The accumulation period in seconds. Used only if 
+//   is_accum_field is set to true.
+// 	override_grib_tables_version - Used to assign a different
+//  grib_table_version number for a particular field. If set to -1
+//  the the parameter is ignored.
+//
+// Type: struct
+//   typedef struct {
+//      string mdv_field_name;
+//      int mdv_field_num;
+//      int grib_code;
+//      int precision;
+//      int max_bit_length;
+//      data_convert_type_t data_convert_type;
+//        Options:
+//          DATA_CONVERT_NONE
+//          DATA_CONVERT_MULTIPLY
+//      double data_convert_parameter;
+//      boolean override_vert_level;
+//      int vert_level_type;
+//      int vert_level_bottom;
+//      int vert_level_top;
+//      double data_addend;
+//      field_type_t field_type;
+//        Options:
+//          FIELD_TYPE_NORMAL
+//          FIELD_TYPE_ACCUM
+//          FIELD_TYPE_AVG
+//      int accum_secs;
+//      int override_grib_tables_version;
+//   }
+//
+// 1D array - variable length.
+//
+output_fields = {
+  { "precip", 0, 61, 2, -1, DATA_CONVERT_NONE, 0, FALSE, 0, 0, 0, 0, FIELD_TYPE_ACCUM, 3600, -1}
+};
+
+///////////// all_fields_required /////////////////////
+//
+// Flag indicating whether to create the output GRIB file if not all of 
+//   the fields are available in the MDV file.
+// If true, all fields specified in the output_fields list must be 
+//   present for the GRIB file to be created.
+// Type: boolean
+//
+
+all_fields_required = TRUE;
+
